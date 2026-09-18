@@ -1,0 +1,85 @@
+{
+  "name": "jyavani-ai",
+  "version": "0.4.0",
+  "title": "Jyavani AI",
+  "description": "AI-assisted drafting and rewriting for Jyavani Article and Page editors.",
+  "author": "Adam Muiz",
+  "author_uri": "https://jyavani.com/member/adammuiz/",
+  "plugin_uri": "https://jyavani.com/plugin/jyavani-ai/",
+  "homepage": "https://jyavani.com/plugin/jyavani-ai/",
+  "license": "MIT",
+  "icon": "icon.svg",
+  "requires": {
+    "jyavani": ">=2.3.139",
+    "php": ">=8.1",
+    "extensions": ["curl", "json", "mbstring", "pdo", "pdo_mysql", "sodium"],
+    "plugins": {}
+  },
+  "permissions": [
+    {
+      "key": "plugin.jyavani-ai.assistant.generate",
+      "label": "Use Jyavani AI Assistant",
+      "supports_scope": false,
+      "default_roles": ["author", "editor", "admin"],
+      "delegable": true
+    }
+  ],
+  "admin": {
+    "pages": [
+      {
+        "route": "admin/tools/jyavani-ai",
+        "file": "admin/index.php",
+        "title": "Jyavani AI",
+        "roles": ["admin"],
+        "site_owner": true
+      },
+      {
+        "route": "admin/tools/jyavani-ai/save",
+        "file": "admin/save.php",
+        "title": "Save Jyavani AI Settings",
+        "hidden": true,
+        "roles": ["admin"],
+        "site_owner": true
+      },
+      {
+        "route": "admin/tools/jyavani-ai/generate",
+        "file": "admin/generate.php",
+        "title": "Generate AI Content",
+        "hidden": true,
+        "roles": ["author", "editor", "admin"],
+        "permission": "plugin.jyavani-ai.assistant.generate"
+      }
+    ],
+    "nav": [
+      {
+        "label": "Jyavani AI",
+        "icon": "zap",
+        "icon_asset": "static/plugins/jyavani-ai/icon-sidebar.svg",
+        "page": "admin/tools/jyavani-ai",
+        "parent": "tools",
+        "site_owner": true,
+        "roles": ["admin"]
+      }
+    ]
+  },
+  "static": {
+    "copy": [
+      {
+        "from": "assets/css/editor-assistant.css",
+        "to": "static/plugins/jyavani-ai/editor-assistant.css"
+      },
+      {
+        "from": "assets/js/editor-assistant.js",
+        "to": "static/plugins/jyavani-ai/editor-assistant.js"
+      },
+      {
+        "from": "assets/icon-sidebar.svg",
+        "to": "static/plugins/jyavani-ai/icon-sidebar.svg"
+      }
+    ]
+  },
+  "assets": {
+    "css": ["/static/plugins/jyavani-ai/editor-assistant.css?v=0.4.0"],
+    "js": ["/static/plugins/jyavani-ai/editor-assistant.js?v=0.4.0"]
+  }
+}
