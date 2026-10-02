@@ -1,53 +1,956 @@
-.jy-editor-action[data-editor-action="plugin.jyavani-ai.assist"]:hover,.jy-editor-action[data-editor-action="plugin.jyavani-ai.assist"]:focus-visible{border-color:var(--adam-primary);background:var(--adam-primary-soft);color:var(--adam-text)}
-.jai-dialog{position:fixed;inset:0;z-index:140000;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(8,15,35,.68);backdrop-filter:blur(3px)}
-.jai-dialog__panel{display:flex;flex-direction:column;width:min(980px,100%);max-height:92vh;overflow:hidden;border:1px solid var(--adam-border);border-radius:18px;background:var(--adam-card);box-shadow:0 28px 80px rgba(0,0,0,.35);color:var(--adam-text)}
-.jai-dialog__header,.jai-dialog__footer{display:flex;align-items:center;gap:.75rem;padding:1rem 1.2rem;background:var(--adam-surface-3)}
-.jai-dialog__header{justify-content:space-between;border-bottom:1px solid var(--adam-border)}
-.jai-dialog__footer{display:grid;grid-template-columns:auto 1fr auto auto auto;border-top:1px solid var(--adam-border)}
-.jai-dialog__eyebrow,.jai-settings__eyebrow{margin:0 0 .2rem;color:var(--adam-primary);font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
-.jai-dialog__header h2,.jai-settings h2{margin:0}
-.jai-dialog__close{display:grid;width:36px;height:36px;padding:0;border:1px solid var(--adam-border-2);border-radius:50%;background:var(--adam-surface-2);color:var(--adam-text);font-size:1.5rem;line-height:1;place-items:center;cursor:pointer}
-.jai-dialog__body{overflow:auto;padding:1.2rem}
-.jai-dialog__controls{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.jai-dialog label{display:grid;gap:.4rem;font-size:.82rem;font-weight:700}
-.jai-dialog select,.jai-dialog textarea{box-sizing:border-box;width:100%;border:1px solid var(--adam-border-2);border-radius:9px;background:var(--adam-surface-2);color:var(--adam-text);font:inherit}
-.jai-dialog select{min-height:40px;padding:.45rem .6rem}
-.jai-dialog textarea{padding:.65rem;resize:vertical}
-.jai-dialog__instructions{margin-top:1rem}
-.jai-dialog__privacy{margin:.65rem 0;color:var(--adam-muted);font-size:.8rem}
-.jai-dialog__preview{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.jai-dialog__preview textarea{min-height:260px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.78rem;line-height:1.5}
-.jai-dialog__status{min-height:1.35em;margin:.75rem 0 0;color:var(--adam-danger,#b91c1c);font-size:.84rem}
-.jai-dialog__settings{align-self:center;color:var(--adam-primary);font-size:.84rem;font-weight:700}
-.jai-settings__heading{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
-.jai-settings__heading p:not(.jai-settings__eyebrow){max-width:720px;color:var(--adam-muted)}
-.jai-status{display:inline-flex;padding:.4rem .65rem;border-radius:999px;font-size:.78rem;font-weight:800;white-space:nowrap}
-.jai-status--ready{background:rgba(16,185,129,.14);color:#047857}
-.jai-status--missing{background:rgba(245,158,11,.16);color:#b45309}
-.jai-settings__grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.2rem}
-.jai-settings__panel{padding:1rem;border:1px solid var(--adam-border);border-radius:14px;background:var(--adam-surface-2)}
-.jai-settings__panel h3{margin:0 0 .85rem}
-.jai-definition-list{display:grid;gap:.65rem;margin:0}
-.jai-definition-list>div{display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--adam-border);padding-bottom:.55rem}
-.jai-definition-list dt{color:var(--adam-muted)}
-.jai-definition-list dd{margin:0;text-align:right;font-weight:700}
-.jai-metrics{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
-.jai-metrics>div{display:grid;gap:.2rem;padding:.8rem;border-radius:10px;background:var(--adam-card)}
-.jai-metrics strong{font-size:1.4rem}.jai-metrics span{color:var(--adam-muted);font-size:.78rem}
-.jai-settings__note{color:var(--adam-muted);font-size:.84rem;line-height:1.55}
-.jai-settings__form{display:grid;gap:1rem;margin-top:1rem}
-.jai-settings__form .btn{margin-top:1rem}
-.jai-settings__form .btn.btn-primary{border-color:var(--adam-primary);background:var(--adam-primary);color:var(--adam-bg)}
-.jai-settings__form .btn.btn-primary:hover{border-color:var(--adam-primary-600);background:var(--adam-primary-600);color:var(--adam-bg)}
-.jai-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.jai-field{display:grid;gap:.4rem;color:var(--adam-text);font-size:.82rem;font-weight:700}
+/* Jyavani AI admin and editor UI. Keep all rules scoped to the plugin namespace. */
+.jai-settings,
+.jai-dialog {
+  --jai-brand: #6750d8;
+  --jai-brand-strong: #5138bd;
+  --jai-brand-soft: rgba(103, 80, 216, 0.1);
+  --jai-brand-border: rgba(103, 80, 216, 0.24);
+  --jai-success: #137a45;
+  --jai-success-soft: rgba(22, 130, 75, 0.11);
+  --jai-warning: #995700;
+  --jai-warning-soft: rgba(183, 106, 0, 0.12);
+  --jai-focus: rgba(103, 80, 216, 0.28);
+}
+
+html.theme-dark .jai-settings,
+html.theme-dark .jai-dialog {
+  --jai-brand: #b8a9ff;
+  --jai-brand-strong: #cec4ff;
+  --jai-brand-soft: rgba(155, 135, 255, 0.15);
+  --jai-brand-border: rgba(184, 169, 255, 0.32);
+  --jai-success: #6ee7a0;
+  --jai-success-soft: rgba(74, 222, 128, 0.14);
+  --jai-warning: #fbbf24;
+  --jai-warning-soft: rgba(251, 191, 36, 0.14);
+  --jai-focus: rgba(184, 169, 255, 0.32);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.theme-light):not(.theme-dark) .jai-settings,
+  html:not(.theme-light):not(.theme-dark) .jai-dialog {
+    --jai-brand: #b8a9ff;
+    --jai-brand-strong: #cec4ff;
+    --jai-brand-soft: rgba(155, 135, 255, 0.15);
+    --jai-brand-border: rgba(184, 169, 255, 0.32);
+    --jai-success: #6ee7a0;
+    --jai-success-soft: rgba(74, 222, 128, 0.14);
+    --jai-warning: #fbbf24;
+    --jai-warning-soft: rgba(251, 191, 36, 0.14);
+    --jai-focus: rgba(184, 169, 255, 0.32);
+  }
+}
+
+.jai-settings,
+.jai-settings *,
+.jai-dialog,
+.jai-dialog * {
+  box-sizing: border-box;
+}
+
+.jy-editor-action[data-editor-action="plugin.jyavani-ai.assist"]:hover,
+.jy-editor-action[data-editor-action="plugin.jyavani-ai.assist"]:focus-visible {
+  border-color: var(--adam-primary);
+  color: var(--adam-text);
+  background: var(--adam-primary-soft);
+}
+
+/* Settings page */
+.jai-settings {
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  color: var(--adam-text);
+}
+
+.jai-settings__hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  overflow: hidden;
+  padding: clamp(1.15rem, 3vw, 1.7rem);
+  border: 1px solid var(--jai-brand-border);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 92% -25%, rgba(103, 80, 216, 0.22), transparent 36%),
+    linear-gradient(135deg, var(--jai-brand-soft), var(--adam-card) 58%);
+  box-shadow: 0 14px 34px rgba(56, 42, 128, 0.07);
+}
+
+.jai-settings__hero::after {
+  position: absolute;
+  right: -42px;
+  bottom: -88px;
+  width: 190px;
+  height: 190px;
+  border: 25px solid rgba(103, 80, 216, 0.055);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.jai-settings__heading,
+.jai-dialog__identity {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.jai-settings__heading > div,
+.jai-dialog__identity > div {
+  min-width: 0;
+}
+
+.jai-settings__mark,
+.jai-dialog__mark {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(145deg, #836fff, #5138bd);
+  box-shadow: 0 12px 26px rgba(81, 56, 189, 0.24);
+}
+
+.jai-settings__mark {
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
+}
+
+.jai-settings__mark svg,
+.jai-dialog__mark svg {
+  width: 58%;
+  height: 58%;
+  stroke: currentColor;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.jai-settings__eyebrow,
+.jai-dialog__eyebrow {
+  margin: 0 0 0.25rem;
+  color: var(--jai-brand-strong);
+  font-size: 0.69rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.jai-settings h2,
+.jai-dialog__header h2 {
+  margin: 0;
+  color: var(--adam-text);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.jai-settings h2 {
+  font-size: clamp(1.4rem, 3vw, 1.85rem);
+}
+
+.jai-settings__heading p:not(.jai-settings__eyebrow) {
+  max-width: 660px;
+  margin: 0.42rem 0 0;
+  color: var(--adam-muted);
+  font-size: 0.87rem;
+  line-height: 1.55;
+}
+
+.jai-status {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 0.46rem;
+  padding: 0.48rem 0.72rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.jai-status__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.44);
+}
+
+.jai-status--ready {
+  border-color: rgba(22, 130, 75, 0.24);
+  color: var(--jai-success);
+  background: var(--jai-success-soft);
+}
+
+.jai-status--missing {
+  border-color: rgba(183, 106, 0, 0.25);
+  color: var(--jai-warning);
+  background: var(--jai-warning-soft);
+}
+
+.jai-settings__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.8fr);
+  align-items: stretch;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.jai-settings__panel {
+  min-width: 0;
+  padding: clamp(1rem, 2.5vw, 1.25rem);
+  border: 1px solid var(--adam-border);
+  border-radius: 16px;
+  background: var(--adam-card);
+  box-shadow: 0 6px 22px rgba(17, 24, 39, 0.04);
+}
+
+.jai-settings__panel h3 {
+  margin: 0;
+  color: var(--adam-text);
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.jai-settings__panel-head,
+.jai-settings__form-head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.jai-settings__panel-head {
+  margin-bottom: 1rem;
+}
+
+.jai-settings__panel-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 10px;
+  color: var(--jai-brand-strong);
+  background: var(--jai-brand-soft);
+}
+
+.jai-settings__panel-icon--usage {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.jai-settings__panel-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.jai-definition-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  border: 1px solid var(--adam-border-softer, var(--adam-border));
+  border-radius: 12px;
+  background: var(--adam-surface-2);
+}
+
+.jai-definition-list > div {
+  min-width: 0;
+  padding: 0.72rem 0.8rem;
+  border-bottom: 1px solid var(--adam-border-softer, var(--adam-border));
+}
+
+.jai-definition-list > div:nth-child(odd) {
+  border-right: 1px solid var(--adam-border-softer, var(--adam-border));
+}
+
+.jai-definition-list > div:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+.jai-definition-list dt,
+.jai-definition-list dd {
+  overflow-wrap: anywhere;
+}
+
+.jai-definition-list dt {
+  margin-bottom: 0.24rem;
+  color: var(--adam-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.jai-definition-list dd {
+  margin: 0;
+  color: var(--adam-text-2, var(--adam-text));
+  font-size: 0.81rem;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+.jai-definition-list code {
+  color: inherit;
+  font-size: 0.77rem;
+}
+
+.jai-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.jai-metrics > div {
+  display: flex;
+  min-width: 0;
+  min-height: 94px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.9rem;
+  border: 1px solid var(--adam-border-softer, var(--adam-border));
+  border-radius: 12px;
+  background: var(--adam-surface-2);
+}
+
+.jai-metrics strong,
+.jai-metrics span {
+  display: block;
+}
+
+.jai-metrics strong {
+  overflow: hidden;
+  color: var(--adam-text);
+  font-size: clamp(1.25rem, 3vw, 1.6rem);
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jai-metrics span {
+  margin-top: 0.32rem;
+  color: var(--adam-muted);
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.jai-settings__note,
+.jai-settings__setup p {
+  color: var(--adam-muted);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.jai-settings__panel > .jai-settings__note {
+  margin: 0.85rem 0 0;
+}
+
+.jai-settings__form {
+  margin-top: 1rem;
+}
+
+.jai-settings__panel--form {
+  padding: 0;
+}
+
+.jai-settings__form-head {
+  align-items: flex-start;
+  padding: 1.2rem 1.25rem;
+  border-bottom: 1px solid var(--adam-border-softer, var(--adam-border));
+}
+
+.jai-settings__form-head > div {
+  min-width: 0;
+}
+
+.jai-settings__form-head .jai-settings__note,
+.jai-settings__setup .jai-settings__form-head p {
+  margin: 0.3rem 0 0;
+}
+
+.jai-settings__step {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--jai-brand-border);
+  border-radius: 10px;
+  color: var(--jai-brand-strong);
+  background: var(--jai-brand-soft);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+}
+
+.jai-settings__panel--form > .adam-notice {
+  margin: 1rem 1.25rem 0;
+}
+
+.jai-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 1.2rem 1.25rem;
+}
+
+.jai-form-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.9rem;
+}
+
+.jai-form-section--limits {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.jai-field {
+  display: grid;
+  min-width: 0;
+  gap: 0.42rem;
+  color: var(--adam-text-2, var(--adam-text));
+  font-size: 0.79rem;
+  font-weight: 750;
+}
+
 .jai-field[hidden]{display:none}
-.jai-field--wide{grid-column:1/-1}
-.jai-settings__shared{display:grid;gap:.2rem;padding-top:.25rem;border-top:1px solid var(--adam-border);color:var(--adam-text)}
-.jai-settings__shared span{color:var(--adam-muted);font-size:.8rem;font-weight:400}
-.jai-field input,.jai-field select{box-sizing:border-box;width:100%;min-height:42px;padding:.55rem .7rem;border:1px solid var(--adam-border-2);border-radius:9px;background:var(--adam-card);color:var(--adam-text);font:inherit;font-weight:400}
-.jai-field input:focus-visible,.jai-field select:focus-visible{outline:2px solid var(--adam-primary);outline-offset:2px}
-.jai-check{display:flex;align-items:center;gap:.5rem;margin-top:1rem;color:var(--adam-text);font-size:.84rem}
-.jai-settings__setup{margin-top:1rem}.jai-settings__setup pre{overflow:auto;padding:1rem;border-radius:10px;background:#111827;color:#dbeafe}
-@media(max-width:720px){.jai-dialog{align-items:flex-end;padding:0}.jai-dialog__panel{max-height:96vh;border-radius:18px 18px 0 0}.jai-dialog__controls,.jai-dialog__preview,.jai-settings__grid{grid-template-columns:1fr}.jai-dialog__footer{grid-template-columns:1fr 1fr}.jai-dialog__footer span{display:none}.jai-dialog__settings{grid-column:1/-1}.jai-settings__heading{display:grid}.jai-status{justify-self:start}}
-@media(max-width:720px){.jai-form-grid{grid-template-columns:1fr}.jai-field--wide{grid-column:auto}}
+
+.jai-field--wide {
+  grid-column: 1 / -1;
+}
+
+.jai-settings__shared {
+  display: grid;
+  gap: 0.2rem;
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--adam-border-softer, var(--adam-border));
+  color: var(--adam-text);
+}
+
+.jai-settings__shared strong {
+  font-size: 0.86rem;
+}
+
+.jai-settings__shared span {
+  color: var(--adam-muted);
+  font-size: 0.76rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.jai-field input,
+.jai-field select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.64rem 0.75rem;
+  border: 1px solid var(--adam-border-2);
+  border-radius: 10px;
+  color: var(--adam-text);
+  background: var(--adam-bg, var(--adam-card));
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 400;
+  line-height: 1.35;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.jai-field input:hover,
+.jai-field select:hover {
+  border-color: var(--jai-brand-border);
+}
+
+.jai-field input:focus,
+.jai-field select:focus {
+  border-color: var(--jai-brand);
+  background: var(--adam-card);
+  box-shadow: 0 0 0 3px var(--jai-brand-soft);
+  outline: 0;
+}
+
+.jai-field input:focus-visible,
+.jai-field select:focus-visible {
+  outline: 2px solid var(--jai-brand);
+  outline-offset: 2px;
+}
+
+.jai-field input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.jai-settings__actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--adam-border-softer, var(--adam-border));
+  background: var(--adam-surface-2);
+  border-radius: 0 0 16px 16px;
+}
+
+.jai-settings__submit {
+  min-height: 43px;
+  padding-inline: 1.05rem;
+}
+
+.jai-settings__form .btn.btn-primary,
+.jai-dialog .btn.btn-primary {
+  border-color: var(--jai-brand-strong);
+  color: #fff;
+  background: linear-gradient(135deg, #6750d8, #5138bd);
+  box-shadow: 0 8px 18px rgba(81, 56, 189, 0.18);
+}
+
+.jai-settings__form .btn.btn-primary:hover,
+.jai-dialog .btn.btn-primary:hover {
+  border-color: #422ba8;
+  color: #fff;
+  background: linear-gradient(135deg, #5c44ca, #422ba8);
+}
+
+.jai-settings__setup {
+  margin-top: 1rem;
+  padding: 0;
+  overflow: hidden;
+}
+
+.jai-settings__setup pre {
+  margin: 0;
+  overflow: auto;
+  padding: 1.1rem 1.25rem;
+  color: #dbeafe;
+  background: #101726;
+  font-size: 0.76rem;
+  line-height: 1.7;
+}
+
+.jai-settings__setup code {
+  color: inherit;
+}
+
+/* Editor assistant dialog */
+.jai-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 140000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  color: var(--adam-text);
+  background: rgba(8, 15, 35, 0.72);
+  backdrop-filter: blur(5px);
+}
+
+.jai-dialog__panel {
+  display: flex;
+  width: min(1040px, 100%);
+  max-height: min(92vh, 860px);
+  min-height: 0;
+  overflow: hidden;
+  flex-direction: column;
+  border: 1px solid var(--adam-border);
+  border-radius: 20px;
+  color: var(--adam-text);
+  background: var(--adam-card);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.38);
+}
+
+.jai-dialog__header,
+.jai-dialog__footer {
+  flex: 0 0 auto;
+  padding: 1rem 1.2rem;
+  background: var(--adam-card);
+}
+
+.jai-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--adam-border);
+}
+
+.jai-dialog__mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+}
+
+.jai-dialog__header h2 {
+  font-size: 1.2rem;
+}
+
+.jai-dialog__close {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--adam-border-2);
+  border-radius: 11px;
+  color: var(--adam-muted);
+  background: var(--adam-surface-2);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+.jai-dialog__close:hover {
+  border-color: var(--jai-brand-border);
+  color: var(--jai-brand-strong);
+  background: var(--jai-brand-soft);
+}
+
+.jai-dialog__body {
+  min-height: 0;
+  overflow: auto;
+  padding: 1.15rem 1.2rem;
+  background: var(--adam-surface-2);
+}
+
+.jai-dialog__composer {
+  padding: 1rem;
+  border: 1px solid var(--adam-border);
+  border-radius: 14px;
+  background: var(--adam-card);
+}
+
+.jai-dialog__controls,
+.jai-dialog__preview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.jai-dialog label {
+  display: grid;
+  min-width: 0;
+  gap: 0.42rem;
+  color: var(--adam-text-2, var(--adam-text));
+  font-size: 0.79rem;
+  font-weight: 750;
+}
+
+.jai-dialog select,
+.jai-dialog textarea {
+  width: 100%;
+  border: 1px solid var(--adam-border-2);
+  border-radius: 10px;
+  color: var(--adam-text);
+  background: var(--adam-bg, var(--adam-surface-2));
+  font: inherit;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.jai-dialog select {
+  min-height: 43px;
+  padding: 0.55rem 0.7rem;
+}
+
+.jai-dialog textarea {
+  padding: 0.7rem 0.75rem;
+  resize: vertical;
+}
+
+.jai-dialog select:hover,
+.jai-dialog textarea:hover {
+  border-color: var(--jai-brand-border);
+}
+
+.jai-dialog select:focus,
+.jai-dialog textarea:focus {
+  border-color: var(--jai-brand);
+  background: var(--adam-card);
+  box-shadow: 0 0 0 3px var(--jai-brand-soft);
+  outline: 0;
+}
+
+.jai-dialog select:focus-visible,
+.jai-dialog textarea:focus-visible,
+.jai-dialog__close:focus-visible,
+.jai-dialog .btn:focus-visible,
+.jai-dialog__settings:focus-visible {
+  outline: 3px solid var(--jai-focus);
+  outline-offset: 2px;
+}
+
+.jai-dialog select:disabled,
+.jai-dialog textarea:disabled,
+.jai-dialog .btn:disabled {
+  opacity: 0.56;
+  cursor: not-allowed;
+}
+
+.jai-dialog__instructions {
+  margin-top: 0.9rem;
+}
+
+.jai-dialog__instructions textarea {
+  min-height: 82px;
+}
+
+.jai-dialog__privacy {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin: 0.7rem 0 0;
+  color: var(--adam-muted);
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+
+.jai-dialog__privacy-mark {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  margin-top: 0.28rem;
+  border-radius: 50%;
+  background: var(--jai-brand);
+  box-shadow: 0 0 0 3px var(--jai-brand-soft);
+}
+
+.jai-dialog__preview {
+  margin-top: 1rem;
+}
+
+.jai-dialog__preview-pane {
+  overflow: hidden;
+  gap: 0 !important;
+  border: 1px solid var(--adam-border);
+  border-radius: 14px;
+  background: var(--adam-card);
+}
+
+.jai-dialog__preview-pane > span {
+  padding: 0.68rem 0.78rem;
+  border-bottom: 1px solid var(--adam-border);
+  color: var(--adam-muted);
+  background: var(--adam-card);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.jai-dialog__preview-pane--result > span {
+  color: var(--jai-brand-strong);
+  background: var(--jai-brand-soft);
+}
+
+.jai-dialog__preview textarea {
+  min-height: 250px;
+  border: 0;
+  border-radius: 0;
+  color: var(--adam-text-3, var(--adam-text));
+  background: var(--adam-bg, var(--adam-surface-2));
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.76rem;
+  line-height: 1.55;
+  resize: none;
+}
+
+.jai-dialog__preview textarea:focus {
+  position: relative;
+  z-index: 1;
+  box-shadow: inset 0 0 0 2px var(--jai-brand);
+}
+
+.jai-dialog__status {
+  min-height: 1.35em;
+  margin: 0.75rem 0 0;
+  color: var(--adam-danger, #b91c1c);
+  font-size: 0.81rem;
+  line-height: 1.45;
+}
+
+.jai-dialog__footer {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 0.6rem;
+  border-top: 1px solid var(--adam-border);
+}
+
+.jai-dialog__settings {
+  width: fit-content;
+  color: var(--jai-brand-strong);
+  font-size: 0.78rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.jai-dialog__settings:hover {
+  text-decoration: underline;
+}
+
+.jai-dialog__footer .btn {
+  min-height: 40px;
+  padding: 0.55rem 0.82rem;
+  border-radius: 9px;
+}
+
+@media (max-width: 880px) {
+  .jai-settings__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .jai-dialog__panel {
+    max-height: 94vh;
+  }
+}
+
+@media (max-width: 720px) {
+  .jai-settings__hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .jai-status {
+    align-self: flex-start;
+  }
+
+  .jai-dialog {
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .jai-dialog__panel {
+    width: 100%;
+    max-height: 100dvh;
+    height: 100dvh;
+    border-width: 0;
+    border-radius: 0;
+  }
+
+  .jai-dialog__body {
+    padding: 0.9rem;
+  }
+
+  .jai-dialog__controls,
+  .jai-dialog__preview {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .jai-dialog__preview textarea {
+    min-height: 210px;
+  }
+
+  .jai-dialog__footer {
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
+    padding: 0.85rem 0.9rem;
+  }
+
+  .jai-dialog__footer > span {
+    display: none;
+  }
+
+  .jai-definition-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .jai-definition-list > div:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .jai-definition-list > div:nth-last-child(2) {
+    border-bottom: 1px solid var(--adam-border-softer, var(--adam-border));
+  }
+}
+
+@media (max-width: 560px) {
+  .jai-settings__hero {
+    padding: 1rem;
+    border-radius: 16px;
+  }
+
+  .jai-settings__heading {
+    align-items: flex-start;
+  }
+
+  .jai-settings__mark {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  .jai-metrics,
+  .jai-form-section--limits {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .jai-metrics > div {
+    min-height: 82px;
+  }
+
+  .jai-settings__form-head,
+  .jai-form-grid,
+  .jai-settings__actions {
+    padding-right: 0.95rem;
+    padding-left: 0.95rem;
+  }
+
+  .jai-settings__actions,
+  .jai-settings__submit {
+    width: 100%;
+  }
+
+  .jai-dialog__header {
+    padding: 0.8rem 0.9rem;
+  }
+
+  .jai-dialog__mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+  }
+
+  .jai-dialog__header h2 {
+    font-size: 1.05rem;
+  }
+
+  .jai-dialog__footer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .jai-dialog__settings {
+    grid-column: 1 / -1;
+  }
+
+  .jai-dialog__footer [data-jai-cancel],
+  .jai-dialog__footer [data-jai-generate] {
+    width: 100%;
+  }
+
+  .jai-dialog__footer [data-jai-apply] {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jai-field input,
+  .jai-field select,
+  .jai-dialog select,
+  .jai-dialog textarea,
+  .jai-dialog__close {
+    transition: none;
+  }
+}

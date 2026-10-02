@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1
+
+- Redesign the Site Owner settings page with clearer provider status, configuration, usage metrics, and grouped controls.
+- Refine the editor assistant into a responsive composer with distinct source and generated-result review panels.
+- Improve mobile, dark-theme, focus, and reduced-motion behavior without changing generation or editor mutation flows.
+
 ## 0.4.0
 
 - Adopt the Jyavani 2.3.139 declarative plugin-owned sidebar icon contract.

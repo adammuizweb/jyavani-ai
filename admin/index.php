@@ -39,21 +39,30 @@ $keyLabel = match ($keySource) {
 };
 $base = rtrim((string)ADMIN_BASE_PATH, '/');
 ?>
-<section class="adam-card jai-settings">
-  <div class="jai-settings__heading">
-    <div>
-      <p class="jai-settings__eyebrow"><?= jai_h(jai_t('Editor integration')) ?></p>
-      <h2><?= jai_h(jai_t('Jyavani AI')) ?></h2>
-      <p><?= jai_h(jai_t('AI-assisted drafting for Article and Page editors. Generated content is never saved automatically.')) ?></p>
+<section class="jai-settings">
+  <header class="jai-settings__hero">
+    <div class="jai-settings__heading">
+      <span class="jai-settings__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M16 3.5l2.4 7.1L25.5 13l-7.1 2.4-2.4 7.1-2.4-7.1L6.5 13l7.1-2.4L16 3.5Z"/><path d="m24.5 20.5 1.1 3.4 3.4 1.1-3.4 1.1-1.1 3.4-1.1-3.4L20 25l3.4-1.1 1.1-3.4Z"/></svg>
+      </span>
+      <div>
+        <p class="jai-settings__eyebrow"><?= jai_h(jai_t('Editor integration')) ?></p>
+        <h2><?= jai_h(jai_t('Jyavani AI')) ?></h2>
+        <p><?= jai_h(jai_t('AI-assisted drafting for Article and Page editors. Generated content is never saved automatically.')) ?></p>
+      </div>
     </div>
     <span class="jai-status <?= jai_provider_is_ready() ? 'jai-status--ready' : 'jai-status--missing' ?>">
+      <span class="jai-status__dot" aria-hidden="true"></span>
       <?= jai_h(jai_provider_is_ready() ? jai_t('Provider ready') : jai_t('Provider not configured')) ?>
     </span>
-  </div>
+  </header>
 
   <div class="jai-settings__grid">
-    <article class="jai-settings__panel">
-      <h3><?= jai_h(jai_t('Effective provider configuration')) ?></h3>
+    <article class="jai-settings__panel jai-settings__panel--config">
+      <div class="jai-settings__panel-head">
+        <span class="jai-settings__panel-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2.75a3.25 3.25 0 0 0-3.25 3.25v1H7a3.25 3.25 0 0 0-3.25 3.25v3.5A3.25 3.25 0 0 0 7 17h1.75v1A3.25 3.25 0 0 0 12 21.25 3.25 3.25 0 0 0 15.25 18v-1H17a3.25 3.25 0 0 0 3.25-3.25v-3.5A3.25 3.25 0 0 0 17 7h-1.75V6A3.25 3.25 0 0 0 12 2.75Z"/><path d="M9 12h6M12 9v6"/></svg></span>
+        <h3><?= jai_h(jai_t('Effective provider configuration')) ?></h3>
+      </div>
       <dl class="jai-definition-list">
         <div><dt><?= jai_h(jai_t('Active provider')) ?></dt><dd><?= jai_h($activePreset['label']) ?></dd></div>
         <div><dt><?= jai_h(jai_t('API key')) ?></dt><dd><?= jai_h($keyLabel) ?></dd></div>
@@ -72,8 +81,11 @@ $base = rtrim((string)ADMIN_BASE_PATH, '/');
       <?php endif; ?>
     </article>
 
-    <article class="jai-settings__panel">
-      <h3><?= jai_h(jai_t('Last 24 hours')) ?></h3>
+    <article class="jai-settings__panel jai-settings__panel--usage">
+      <div class="jai-settings__panel-head">
+        <span class="jai-settings__panel-icon jai-settings__panel-icon--usage" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19.25V13m5.33 6.25V8.5m5.34 10.75V11m5.33 8.25V4.75"/></svg></span>
+        <h3><?= jai_h(jai_t('Last 24 hours')) ?></h3>
+      </div>
       <?php if (!empty($usageUnavailable)): ?>
         <p class="adam-notice adam-notice--warning"><?= jai_h(jai_t('Usage storage is unavailable. Reactivate the plugin to run its migrations.')) ?></p>
       <?php else: ?>
@@ -89,36 +101,50 @@ $base = rtrim((string)ADMIN_BASE_PATH, '/');
 
   <form class="jai-settings__form" method="post" action="<?= jai_h($base . '/?page=admin/tools/jyavani-ai/save') ?>" data-jai-provider-settings data-jai-crypto-ready="<?= jai_crypto_available() ? '1' : '0' ?>" data-unsaved-guard>
     <input type="hidden" name="csrf_token" value="<?= jai_h(csrf_token()) ?>">
-    <article class="jai-settings__panel">
-      <h3><?= jai_h(jai_t('Dashboard provider settings')) ?></h3>
-      <p class="jai-settings__note"><?= jai_h(jai_t('Choose the active provider and save each API key once. Stored keys remain encrypted in the database and are visible here only to the Site Owner.')) ?></p>
+    <article class="jai-settings__panel jai-settings__panel--form">
+      <div class="jai-settings__form-head">
+        <span class="jai-settings__step" aria-hidden="true">01</span>
+        <div>
+          <h3><?= jai_h(jai_t('Dashboard provider settings')) ?></h3>
+          <p class="jai-settings__note"><?= jai_h(jai_t('Choose the active provider and save each API key once. Stored keys remain encrypted in the database and are visible here only to the Site Owner.')) ?></p>
+        </div>
+      </div>
       <?php if (!jai_crypto_available()): ?>
         <p class="adam-notice adam-notice--warning"><?= jai_h(jai_t('Credential encryption is unavailable. Configure JYAVANI_AI_SECRET_KEY, APP_KEY, or SESSION_SECRET with at least 32 characters.')) ?></p>
       <?php endif; ?>
       <div class="jai-form-grid">
-        <label class="jai-field jai-field--wide"><span><?= jai_h(jai_t('Active provider')) ?></span><select name="active_provider" required>
-          <?php foreach ($presets as $provider => $preset): ?>
-            <option value="<?= jai_h($provider) ?>" <?= $provider === $activeProvider ? 'selected' : '' ?>><?= jai_h($preset['label']) ?> - <?= jai_h($preset['model']) ?></option>
-          <?php endforeach; ?>
-        </select></label>
-        <label class="jai-field jai-field--wide" data-jai-provider-key="openai" <?= $activeProvider === 'openai' ? '' : 'hidden' ?>><span><?= jai_h(jai_t('OpenAI API key')) ?></span><input type="text" name="openai_api_key" maxlength="4096" autocomplete="off" spellcheck="false" value="<?= jai_h($storedKeys['openai']) ?>" <?= jai_crypto_available() ? '' : 'disabled' ?>></label>
-        <label class="jai-field jai-field--wide" data-jai-provider-key="gemini" <?= $activeProvider === 'gemini' ? '' : 'hidden' ?>><span><?= jai_h(jai_t('Gemini API key')) ?></span><input type="text" name="gemini_api_key" maxlength="4096" autocomplete="off" spellcheck="false" value="<?= jai_h($storedKeys['gemini']) ?>" <?= jai_crypto_available() ? '' : 'disabled' ?>></label>
+        <div class="jai-form-section jai-field--wide">
+          <label class="jai-field jai-field--wide"><span><?= jai_h(jai_t('Active provider')) ?></span><select name="active_provider" required>
+            <?php foreach ($presets as $provider => $preset): ?>
+              <option value="<?= jai_h($provider) ?>" <?= $provider === $activeProvider ? 'selected' : '' ?>><?= jai_h($preset['label']) ?> - <?= jai_h($preset['model']) ?></option>
+            <?php endforeach; ?>
+          </select></label>
+          <label class="jai-field jai-field--wide" data-jai-provider-key="openai" <?= $activeProvider === 'openai' ? '' : 'hidden' ?>><span><?= jai_h(jai_t('OpenAI API key')) ?></span><input type="text" name="openai_api_key" maxlength="4096" autocomplete="off" spellcheck="false" value="<?= jai_h($storedKeys['openai']) ?>" <?= jai_crypto_available() ? '' : 'disabled' ?>></label>
+          <label class="jai-field jai-field--wide" data-jai-provider-key="gemini" <?= $activeProvider === 'gemini' ? '' : 'hidden' ?>><span><?= jai_h(jai_t('Gemini API key')) ?></span><input type="text" name="gemini_api_key" maxlength="4096" autocomplete="off" spellcheck="false" value="<?= jai_h($storedKeys['gemini']) ?>" <?= jai_crypto_available() ? '' : 'disabled' ?>></label>
+        </div>
         <div class="jai-settings__shared jai-field--wide">
           <strong><?= jai_h(jai_t('Shared request settings')) ?></strong>
           <span><?= jai_h(jai_t('These limits apply to both ChatGPT and Gemini.')) ?></span>
         </div>
-        <label class="jai-field"><span><?= jai_h(jai_t('Timeout (seconds)')) ?></span><input type="number" name="timeout_seconds" min="10" max="120" required value="<?= (int)$stored['timeout_seconds'] ?>"></label>
-        <label class="jai-field"><span><?= jai_h(jai_t('Input limit (bytes)')) ?></span><input type="number" name="max_input_bytes" min="1000" max="524288" required value="<?= (int)$stored['max_input_bytes'] ?>"></label>
-        <label class="jai-field"><span><?= jai_h(jai_t('Output token limit')) ?></span><input type="number" name="max_output_tokens" min="256" max="16384" required value="<?= (int)$stored['max_output_tokens'] ?>"></label>
-        <label class="jai-field"><span><?= jai_h(jai_t('Requests per minute per user')) ?></span><input type="number" name="requests_per_minute" min="1" max="60" required value="<?= (int)$stored['requests_per_minute'] ?>"></label>
+        <div class="jai-form-section jai-form-section--limits jai-field--wide">
+          <label class="jai-field"><span><?= jai_h(jai_t('Timeout (seconds)')) ?></span><input type="number" name="timeout_seconds" min="10" max="120" required value="<?= (int)$stored['timeout_seconds'] ?>"></label>
+          <label class="jai-field"><span><?= jai_h(jai_t('Input limit (bytes)')) ?></span><input type="number" name="max_input_bytes" min="1000" max="524288" required value="<?= (int)$stored['max_input_bytes'] ?>"></label>
+          <label class="jai-field"><span><?= jai_h(jai_t('Output token limit')) ?></span><input type="number" name="max_output_tokens" min="256" max="16384" required value="<?= (int)$stored['max_output_tokens'] ?>"></label>
+          <label class="jai-field"><span><?= jai_h(jai_t('Requests per minute per user')) ?></span><input type="number" name="requests_per_minute" min="1" max="60" required value="<?= (int)$stored['requests_per_minute'] ?>"></label>
+        </div>
       </div>
-      <button class="btn btn-primary" type="submit"><?= jai_h(jai_t('Save provider settings')) ?></button>
+      <div class="jai-settings__actions"><button class="btn btn-primary jai-settings__submit" type="submit"><?= jai_h(jai_t('Save provider settings')) ?></button></div>
     </article>
   </form>
 
   <article class="jai-settings__panel jai-settings__setup">
-    <h3><?= jai_h(jai_t('Managed deployment overrides')) ?></h3>
-    <p><?= jai_h(jai_t('Environment variables remain available for managed deployments and take priority over dashboard values.')) ?></p>
+    <div class="jai-settings__form-head">
+      <span class="jai-settings__step" aria-hidden="true">02</span>
+      <div>
+        <h3><?= jai_h(jai_t('Managed deployment overrides')) ?></h3>
+        <p><?= jai_h(jai_t('Environment variables remain available for managed deployments and take priority over dashboard values.')) ?></p>
+      </div>
+    </div>
     <pre><code>JYAVANI_AI_OPENAI_API_KEY=...
 JYAVANI_AI_GEMINI_API_KEY=...
 JYAVANI_AI_TIMEOUT_SECONDS=60

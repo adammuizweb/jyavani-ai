@@ -54,17 +54,19 @@
     overlay.className = 'jai-dialog';
     overlay.innerHTML =
       '<div class="jai-dialog__panel" role="dialog" aria-modal="true" aria-labelledby="jai-dialog-title">' +
-        '<header class="jai-dialog__header"><div><p class="jai-dialog__eyebrow"></p><h2 id="jai-dialog-title"></h2></div><button type="button" class="jai-dialog__close" data-jai-close></button></header>' +
+        '<header class="jai-dialog__header"><div class="jai-dialog__identity"><span class="jai-dialog__mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3.5l2.4 7.1L25.5 13l-7.1 2.4-2.4 7.1-2.4-7.1L6.5 13l7.1-2.4L16 3.5Z"/><path d="m24.5 20.5 1.1 3.4 3.4 1.1-3.4 1.1-1.1 3.4-1.1-3.4L20 25l3.4-1.1 1.1-3.4Z"/></svg></span><div><p class="jai-dialog__eyebrow"></p><h2 id="jai-dialog-title"></h2></div></div><button type="button" class="jai-dialog__close" data-jai-close></button></header>' +
         '<div class="jai-dialog__body">' +
-          '<div class="jai-dialog__controls">' +
-            '<label><span data-jai-action-label></span><select data-jai-operation></select></label>' +
-            '<label><span data-jai-target-label></span><select data-jai-target></select></label>' +
+          '<div class="jai-dialog__composer">' +
+            '<div class="jai-dialog__controls">' +
+              '<label><span data-jai-action-label></span><select data-jai-operation></select></label>' +
+              '<label><span data-jai-target-label></span><select data-jai-target></select></label>' +
+            '</div>' +
+            '<label class="jai-dialog__instructions"><span data-jai-instruction-label></span><textarea rows="3" maxlength="2000" data-jai-instruction></textarea></label>' +
+            '<p class="jai-dialog__privacy"><span class="jai-dialog__privacy-mark" aria-hidden="true"></span><span data-jai-privacy></span></p>' +
           '</div>' +
-          '<label class="jai-dialog__instructions"><span data-jai-instruction-label></span><textarea rows="3" maxlength="2000" data-jai-instruction></textarea></label>' +
-          '<p class="jai-dialog__privacy" data-jai-privacy></p>' +
           '<div class="jai-dialog__preview">' +
-            '<label><span data-jai-source-label></span><textarea readonly data-jai-source></textarea></label>' +
-            '<label><span data-jai-result-label></span><textarea readonly data-jai-result></textarea></label>' +
+            '<label class="jai-dialog__preview-pane"><span data-jai-source-label></span><textarea readonly data-jai-source></textarea></label>' +
+            '<label class="jai-dialog__preview-pane jai-dialog__preview-pane--result"><span data-jai-result-label></span><textarea readonly data-jai-result></textarea></label>' +
           '</div>' +
           '<p class="jai-dialog__status" role="status" aria-live="polite" data-jai-status></p>' +
         '</div>' +

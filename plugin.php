@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 if (!defined('PLUGIN_SYSTEM_LOADED')) return;
 
-const JAI_VERSION = '0.4.0';
+const JAI_VERSION = '0.4.1';
 const JAI_PERMISSION_GENERATE = 'plugin.jyavani-ai.assistant.generate';
 const JAI_RATE_LIMIT_TABLE = 'jai_rate_limits';
 const JAI_USAGE_TABLE = 'jai_usage_events';

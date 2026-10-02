@@ -1,6 +1,6 @@
 {
   "name": "jyavani-ai",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "title": "Jyavani AI",
   "description": "AI-assisted drafting and rewriting for Jyavani Article and Page editors.",
   "author": "Adam Muiz",
@@ -79,7 +79,7 @@
     ]
   },
   "assets": {
-    "css": ["/static/plugins/jyavani-ai/editor-assistant.css?v=0.4.0"],
-    "js": ["/static/plugins/jyavani-ai/editor-assistant.js?v=0.4.0"]
+    "css": ["/static/plugins/jyavani-ai/editor-assistant.css?v=0.4.1"],
+    "js": ["/static/plugins/jyavani-ai/editor-assistant.js?v=0.4.1"]
   }
 }

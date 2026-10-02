@@ -1,10 +1,10 @@
 # Jyavani AI Plugin Development Guide
 
-Jyavani AI is an installable Jyavani CMS plugin for assisted drafting and rewriting inside Article and Page editors. Version `0.4.0` requires Jyavani `2.3.139` for the editor API and declarative plugin-owned sidebar icon contract.
+Jyavani AI is an installable Jyavani CMS plugin for assisted drafting and rewriting inside Article and Page editors. Version `0.4.1` requires Jyavani `2.3.139` for the editor API and declarative plugin-owned sidebar icon contract.
 
 ## Installation
 
-1. Build a flat package with `php tools/build-package.php /tmp/jyavani-ai-0.4.0.zip`.
+1. Build a flat package with `php tools/build-package.php /tmp/jyavani-ai-0.4.1.zip`.
 2. Upload the ZIP through Jyavani Plugin Manager and choose **Install & Activate**.
 3. Open **Tools > Jyavani AI** as the Site Owner and configure the provider.
 4. Optionally configure environment overrides described below for a managed deployment.
@@ -254,7 +254,7 @@ Streaming can be added later. A first version can use a normal bounded JSON resp
 
 ## Implementation Status
 
-Version `0.4.0` includes:
+Version `0.4.1` includes:
 
 - Installable manifest with a delegable generation permission and Site Owner-only provider settings.
 - Fixed ChatGPT (OpenAI) and Gemini presets with independent encrypted API keys.

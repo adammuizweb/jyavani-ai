@@ -13,7 +13,7 @@ $check = static function (bool $condition, string $message) use (&$failures): vo
     echo ($condition ? 'PASS' : 'FAIL') . ' ' . $message . PHP_EOL;
     if (!$condition) $failures[] = $message;
 };
-$check(is_array($result) && ($result['version'] ?? '') === '0.4.0', 'package builder reports the manifest version');
+$check(is_array($result) && ($result['version'] ?? '') === '0.4.1', 'package builder reports the manifest version');
 $check(is_file($output) && hash_file('sha256', $output) === ($result['sha256'] ?? ''), 'package checksum matches the published archive');
 
 $zip = new ZipArchive();
@@ -23,7 +23,7 @@ $entries = [];
 if ($opened) {
     for ($index = 0; $index < $zip->numFiles; $index++) $entries[] = (string)$zip->getNameIndex($index);
     $manifest = json_decode((string)$zip->getFromName('plugin.json'), true);
-    $check(($manifest['name'] ?? '') === 'jyavani-ai' && ($manifest['version'] ?? '') === '0.4.0', 'archive contains the expected flat manifest');
+    $check(($manifest['name'] ?? '') === 'jyavani-ai' && ($manifest['version'] ?? '') === '0.4.1', 'archive contains the expected flat manifest');
     $check(in_array('admin/generate.php', $entries, true)
         && in_array('admin/save.php', $entries, true)
         && in_array('assets/icon-sidebar.svg', $entries, true)
